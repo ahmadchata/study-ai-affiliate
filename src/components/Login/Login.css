@@ -1,0 +1,64 @@
+.logo {
+  margin-bottom: 3rem;
+}
+
+.login-container {
+  display: flex;
+  background-color: #fff;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100dvh;
+}
+
+.login-form {
+  width: 383px;
+  margin: auto;
+  padding: 20px;
+}
+
+.selection-card {
+  border: 1px solid #eaeaea;
+  border-radius: 20px;
+  transition: all 300ms ease-out;
+}
+
+.selection-card:hover {
+  border: 2px solid #0c7a50;
+}
+
+.selection-card input,
+.subject-item input {
+  accent-color: #0c7a50;
+}
+
+.selection-card.selected {
+  accent-color: #0c7a50;
+}
+
+.selected {
+  border: 2px solid #0c7a50;
+  background-color: #edf8f6;
+}
+
+.login > input {
+  border: none;
+  outline: none;
+  box-shadow: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+
+.login > input:focus {
+  outline: none;
+  border: none;
+  box-shadow: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+
+.form-field {
+  padding: 16px;
+}
