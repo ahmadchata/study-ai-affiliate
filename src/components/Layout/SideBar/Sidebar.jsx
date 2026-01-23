@@ -63,17 +63,17 @@ const Sidebar = forwardRef((props, ref) => {
 
             <Link
               className={`text-decoration-none d-flex ${
-                location.pathname.includes("/dashboard/subscriptions")
+                location.pathname.includes("/dashboard/payouts")
                   ? "green-text fw-bold"
                   : "text-dark"
               }`}
-              to={"/dashboard/subscriptions"}
+              to={"/dashboard/payouts"}
               onClick={handleLinkClick}
             >
               <SpeakerGroupIcon
                 style={{ color: "#000", marginRight: "10px" }}
               />
-              Subscriptions
+              Payouts
             </Link>
           </div>
         </div>

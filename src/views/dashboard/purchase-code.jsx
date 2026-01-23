@@ -1,4 +1,4 @@
-import PurchaseCode from "../../components/Common/PurchaseCode/PurchaseCode";
+import PurchaseCode from "../../components/Common/Refer";
 
 const SubscriptionPage = () => {
   return <PurchaseCode />;

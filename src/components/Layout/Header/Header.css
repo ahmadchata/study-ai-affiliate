@@ -5,12 +5,35 @@
 
 .header-bg {
   background-color: #0c7a50;
+  position: sticky;
+  top: 0;
+  z-index: 999;
 }
 
 .header {
   padding: 9px 18px;
   border-radius: 20px;
   background-color: #448565;
+}
+
+.code-actn-btn {
+  padding: 6px;
+  border: none;
+  border-top-right-radius: 20px;
+  border-bottom-right-radius: 20px;
+  background-color: #448565;
+}
+
+.info-icon {
+  color: rgba(255, 255, 255, 60%);
+  font-size: 16px;
+  margin-right: 10px;
+}
+
+.code-btn {
+  border-radius: 20px;
+  border: 1px solid #fffcfc33;
+  padding-left: 2px;
 }
 
 .header-label {
@@ -40,7 +63,9 @@
   /* position: fixed; */
   opacity: 1;
   transform: translateX(0);
-  transition: opacity 300ms ease-in-out, transform 300ms ease-in-out;
+  transition:
+    opacity 300ms ease-in-out,
+    transform 300ms ease-in-out;
 }
 
 .sidebar-exit {
@@ -53,11 +78,15 @@
   /* position: fixed; */
   opacity: 0;
   transform: translateX(100%);
-  transition: opacity 300ms ease-in-out, transform 300ms ease-in-out;
+  transition:
+    opacity 300ms ease-in-out,
+    transform 300ms ease-in-out;
 }
 
 .mobile-menu-btn {
-  transition: transform 0.2s ease, background-color 0.2s ease;
+  transition:
+    transform 0.2s ease,
+    background-color 0.2s ease;
 }
 
 .mobile-menu-btn:hover {

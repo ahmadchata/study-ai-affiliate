@@ -1,0 +1,29 @@
+.refer-info {
+  background-color: #f9f9f9;
+  border-radius: 18px;
+}
+
+.refer-info header {
+  display: flex;
+  gap: 16px;
+  padding: 12px 16px;
+  border-bottom: 1px solid #eaeaea;
+}
+
+.tab-btn {
+  background: transparent;
+  border: none;
+  padding: 10px 4px;
+  font-weight: 500;
+  color: #929292;
+  border-bottom: 3px solid transparent;
+}
+
+.tab-btn.active {
+  border-bottom-color: #0c7a50;
+  color: #0c7a50;
+}
+
+.tab-content {
+  padding: 16px;
+}

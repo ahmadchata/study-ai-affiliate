@@ -35,7 +35,7 @@ const Table = ({
     setExpandedRows((prev) =>
       prev.includes(rowId)
         ? prev.filter((id) => id !== rowId)
-        : [...prev, rowId]
+        : [...prev, rowId],
     );
   };
 
@@ -50,8 +50,8 @@ const Table = ({
       const lower = search.toLowerCase();
       result = result.filter((row) =>
         Object.values(row).some(
-          (val) => typeof val === "string" && val.toLowerCase().includes(lower)
-        )
+          (val) => typeof val === "string" && val.toLowerCase().includes(lower),
+        ),
       );
     }
 
@@ -86,7 +86,7 @@ const Table = ({
       .map((col) =>
         col.columnDef.header && typeof col.columnDef.header === "string"
           ? col.columnDef.header
-          : col.id
+          : col.id,
       );
     const rows = table.getRowModel().rows.map((row) =>
       row
@@ -112,7 +112,7 @@ const Table = ({
           } catch {
             return "";
           }
-        })
+        }),
     );
     const csv = Papa.unparse({ fields: headers, data: rows });
     const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
@@ -133,7 +133,7 @@ const Table = ({
         .map((col) =>
           col.columnDef.header && typeof col.columnDef.header === "string"
             ? col.columnDef.header
-            : col.id
+            : col.id,
         ),
     ];
     const rows = table.getRowModel().rows.map((row) =>
@@ -160,15 +160,11 @@ const Table = ({
           } catch {
             return "";
           }
-        })
+        }),
     );
     autoTable(doc, { head: headers, body: rows });
     doc.save("table-data.pdf");
   };
-
-  // if (data?.length === 0) {
-  //   return <p>No data</p>;
-  // }
 
   return (
     <div className="tanstack-table-wrapper p-4">
@@ -263,10 +259,10 @@ const Table = ({
                           ? null
                           : flexRender(
                               header.column.columnDef.header,
-                              header.getContext()
+                              header.getContext(),
                             )}
                       </th>
-                    )
+                    ),
                   )}
                   {isMobile && <th></th>}
                 </tr>
@@ -283,10 +279,10 @@ const Table = ({
                           <td key={cell.id}>
                             {flexRender(
                               cell.column.columnDef.cell,
-                              cell.getContext()
+                              cell.getContext(),
                             )}
                           </td>
-                        )
+                        ),
                       )}
                       {isMobile && (
                         <td>
@@ -327,7 +323,7 @@ const Table = ({
                                 {cell.column.columnDef.header}{" "}
                                 {flexRender(
                                   cell.column.columnDef.cell,
-                                  cell.getContext()
+                                  cell.getContext(),
                                 )}
                               </div>
                             ))}

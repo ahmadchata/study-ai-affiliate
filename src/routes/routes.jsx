@@ -6,8 +6,8 @@ import ProtectedRoute from "./protectedRoutes";
 const Login = lazy(() => import("../views"));
 const Overview = lazy(() => import("../views/dashboard"));
 const Students = lazy(() => import("../views/dashboard/students"));
-const Subscriptions = lazy(() => import("../views/dashboard/subscriptions"));
-const PurchaseCode = lazy(() => import("../views/dashboard/purchase-code"));
+const Payouts = lazy(() => import("../views/dashboard/payouts"));
+const Refer = lazy(() => import("../views/dashboard/refer-and-earn"));
 const Account = lazy(() => import("../views/dashboard/account"));
 
 const AllRoutes = () => {
@@ -34,19 +34,19 @@ const AllRoutes = () => {
         />
 
         <Route
-          path="/dashboard/subscriptions"
+          path="/dashboard/payouts"
           element={
             <ProtectedRoute>
-              <Subscriptions />
+              <Payouts />
             </ProtectedRoute>
           }
         />
 
         <Route
-          path="/dashboard/subscriptions/purchase-code"
+          path="/dashboard/refer-and-earn"
           element={
             <ProtectedRoute>
-              <PurchaseCode />
+              <Refer />
             </ProtectedRoute>
           }
         />

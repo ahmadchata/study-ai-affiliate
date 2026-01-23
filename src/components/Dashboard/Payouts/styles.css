@@ -1,0 +1,62 @@
+.icon-btn {
+  border-radius: 12px;
+  padding: 8px;
+  border: 1px solid #eaeaea;
+}
+
+.p-summary-card-1 {
+  border-top-left-radius: 24px;
+  border-bottom-left-radius: 24px;
+  overflow: hidden;
+  border: 1px solid #eaeaea;
+}
+
+.p-summary-card-2 {
+  border-top-right-radius: 24px;
+  border-bottom-right-radius: 24px;
+  overflow: hidden;
+  border: 1px solid #eaeaea;
+}
+
+.p-summary-card {
+  border-radius: 24px;
+  background-color: #f4f4f4;
+  overflow: hidden;
+  border: 1px solid #eaeaea;
+}
+
+.b-text {
+  font-size: 32px;
+}
+
+.m-text {
+  font-size: 16px;
+}
+
+.h-label {
+  color: #929292;
+}
+
+.green-dot {
+  background-color: #0c7a50;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.red-dot {
+  background-color: #ab2c48;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+@media screen and (max-width: 991px) {
+  .p-summary-card-1 {
+    border-radius: 24px;
+  }
+
+  .p-summary-card-2 {
+    border-radius: 24px;
+  }
+}

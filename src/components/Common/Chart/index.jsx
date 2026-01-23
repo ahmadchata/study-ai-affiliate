@@ -1,76 +1,36 @@
-import {
-  AreaChart,
-  Area,
-  CartesianGrid,
-  XAxis,
-  YAxis,
-  Tooltip,
-} from "recharts";
+import { AreaChart, Area, XAxis, YAxis, Tooltip } from "recharts";
 import "./styles.css";
 import { useQuery } from "@tanstack/react-query";
 import { DashboardAPI } from "../../../api/DashboardAPI";
+import CircularProgress from "@mui/material/CircularProgress";
 
 import { ResponsiveContainer } from "recharts";
-import LoadingTracker from "../Loading";
 
-const EngagementChart = () => {
-  const { data: engagements, isFetching } = useQuery({
-    queryKey: ["engagements"],
+const EarningsChart = () => {
+  const { data: earnings, isFetching } = useQuery({
+    queryKey: ["earnings"],
     refetchOnMount: false,
-    queryFn: () => DashboardAPI.getEngagements(true),
+    queryFn: () => DashboardAPI.getEarnings(true),
   });
 
-  // const data = [
-  //   {
-  //     name: "Mon",
-  //     students: 1000,
-  //   },
-  //   {
-  //     name: "Tue",
-  //     students: 900,
-  //   },
-  //   {
-  //     name: "Wed",
-  //     students: 1500,
-  //   },
-  //   {
-  //     name: "Thur",
-  //     students: 2000,
-  //   },
-  //   {
-  //     name: "Fri",
-  //     students: 2,
-  //   },
-  //   {
-  //     name: "Sat",
-  //     students: 980,
-  //   },
-  //   {
-  //     name: "Sun",
-  //     students: 700,
-  //   },
-  // ];
-
   if (isFetching) {
-    return <LoadingTracker />;
+    return <CircularProgress size={"20px"} style={{ color: "#0c7a50" }} />;
   }
 
-  console.log(engagements?.data?.engagement_data);
-
   return (
-    <ResponsiveContainer width={700} height="90%">
+    <ResponsiveContainer height="90%" width="100%">
       <AreaChart
-        data={engagements?.data?.engagement_data}
+        data={earnings?.data?.earnings_per_day_last_7_days}
         margin={{ top: 20, right: 30, left: 0, bottom: 0 }}
       >
-        <XAxis dataKey="day" />
+        <XAxis dataKey="day_of_week" />
         <YAxis />
-        <CartesianGrid strokeDasharray="3 3" />
         <Tooltip />
         <Area
           type="monotone"
-          dataKey="students_count"
+          dataKey="points"
           stroke="#0c7a50"
+          strokeWidth={2}
           fill="#ddf1e9"
         />
       </AreaChart>
@@ -78,4 +38,4 @@ const EngagementChart = () => {
   );
 };
 
-export default EngagementChart;
+export default EarningsChart;

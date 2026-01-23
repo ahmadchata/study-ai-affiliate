@@ -2,13 +2,25 @@ import { api } from "./configs/axiosConfig";
 import { defineCancelApiObject } from "./configs/axiosUtils";
 
 export const DashboardAPI = {
-  getSubscriptions: async function (page = 1, search, cancel = false) {
+  getPayouts: async function (page = 1, search, cancel = false) {
     const response = await api.request({
-      url: `/method/studyai.apis.organization.get_subscriptions?page=${page}&page_size=20&search=${search}`,
+      url: `/method/studyai.apis.affiliate.get_payouts?page=${page}&page_size=20&search=${search}`,
+      method: "GET",
+      signal: cancel
+        ? cancelApiObject[this.getPayouts.name].handleRequestCancellation()
+            .signal
+        : undefined,
+    });
+    return response.data.data;
+  },
+
+  getPayoutsSummary: async function (cancel = false) {
+    const response = await api.request({
+      url: `/method/studyai.apis.affiliate.get_payout_summary`,
       method: "GET",
       signal: cancel
         ? cancelApiObject[
-            this.getSubscriptions.name
+            this.getPayoutsSummary.name
           ].handleRequestCancellation().signal
         : undefined,
     });
@@ -29,18 +41,18 @@ export const DashboardAPI = {
 
   overview: async function (cancel = false) {
     const response = await api.request({
-      url: `/method/studyai.apis.organization.get_organization_overview`,
+      url: `/method/studyai.apis.affiliate.get_affiliate_profile`,
       method: "GET",
       signal: cancel
         ? cancelApiObject[this.overview.name].handleRequestCancellation().signal
         : undefined,
     });
-    return response.data.data;
+    return response.data.message;
   },
 
   getStudents: async function (page = 1, search, cancel = false) {
     const response = await api.request({
-      url: `/method/studyai.apis.organization.get_organization_students?page=${page}&page_size=${20}&search=${search}`,
+      url: `/method/studyai.apis.affiliate.get_affiliate_students?page=${page}&page_size=${20}&search=${search}`,
       method: "GET",
       signal: cancel
         ? cancelApiObject[this.getStudents.name].handleRequestCancellation()
@@ -52,34 +64,22 @@ export const DashboardAPI = {
 
   getProfile: async function (cancel = false) {
     const response = await api.request({
-      url: `/method/studyai.apis.organization.get_organization_profile`,
+      url: `/method/studyai.apis.affiliate.get_affiliate_profile`,
       method: "GET",
       signal: cancel
         ? cancelApiObject[this.getProfile.name].handleRequestCancellation()
             .signal
         : undefined,
     });
-    return response.data;
+    return response.data.message;
   },
 
-  topPerformers: async function (cancel = false) {
+  getEarnings: async function (cancel = false) {
     const response = await api.request({
-      url: `/method/studyai.apis.organization.get_top_performing_students?limit=50`,
+      url: `/method/studyai.apis.affiliate.get_earnings`,
       method: "GET",
       signal: cancel
-        ? cancelApiObject[this.topPerformers.name].handleRequestCancellation()
-            .signal
-        : undefined,
-    });
-    return response.data;
-  },
-
-  getEngagements: async function (cancel = false) {
-    const response = await api.request({
-      url: `/method/studyai.apis.organization.organization_engagement`,
-      method: "GET",
-      signal: cancel
-        ? cancelApiObject[this.getEngagements.name].handleRequestCancellation()
+        ? cancelApiObject[this.getEarnings.name].handleRequestCancellation()
             .signal
         : undefined,
     });

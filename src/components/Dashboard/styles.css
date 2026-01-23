@@ -3,8 +3,99 @@
   border-radius: 36px;
 }
 
+.actn-btns {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #eaeaea;
+  border-radius: 24px;
+  font-size: 12px;
+}
+
+.ref-actions {
+  border-left: 1px solid transparent;
+}
+
+.ref-link {
+  background-color: #f4f4f4;
+  border-radius: 16px;
+  font-size: 14px;
+  padding: 10px;
+  /* max-width: 18px; */
+}
+
 .summary-card {
   border-radius: 24px;
   overflow: hidden;
   border: 1px solid #eaeaea;
+}
+
+.referral-card {
+  min-height: 50px;
+  background-color: #0c7a50;
+  background-image: url("/assets/pattern.svg");
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.hm-icons {
+  color: #000;
+  font-size: 13px;
+  margin-right: 3px;
+}
+
+.gradient-btn {
+  position: relative;
+  background-color: #fff;
+  color: #0c7a50;
+  border-radius: 18px;
+  padding: 10px 14px;
+  font-size: 18px;
+  font-weight: 400;
+  z-index: 1;
+}
+
+.gradient-btn::before {
+  content: "";
+  position: absolute;
+  top: -1px;
+  left: -1px;
+  right: -1px;
+  bottom: -1px;
+  background: linear-gradient(
+    45deg,
+    #ff9a56,
+    #ffad56,
+    #d4af37,
+    #7cb342,
+    #4caf50,
+    #2e7d32
+  );
+  border-radius: 18px;
+  z-index: -1;
+}
+
+.gradient-btn::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: white;
+  border-radius: 18px;
+  z-index: -1;
+}
+
+@media (max-width: 768px) {
+  /* .ref-actions {
+    border-right: 2px solid #eaeaea;
+  } */
+}
+
+@media (min-width: 992px) {
+  .ref-actions {
+    border-left: 2px solid #eaeaea !important;
+    padding-left: 16px;
+  }
 }

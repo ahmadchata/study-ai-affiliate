@@ -6,6 +6,11 @@
   /* overflow: hidden; */
 }
 
+.performers-table-head {
+  background-color: #f4f4f4;
+  color: #929292;
+}
+
 .performers-table-tr th,
 .performers-table-tr td {
   padding: 12px 20px;

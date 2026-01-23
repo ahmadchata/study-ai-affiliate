@@ -92,7 +92,7 @@ export default function Login() {
   });
 
   const onSubmit = async (data) => {
-    // mutation.mutate({ usr: data.usr, pwd: data.pwd });
+    mutation.mutate({ usr: data.usr, pwd: data.pwd });
   };
 
   if (authLoading) {
@@ -112,6 +112,59 @@ export default function Login() {
           <p className="m-0 p-0 fs-5">
             <span className="text-black">Welcome back, enter your details</span>
           </p>
+        </div>
+
+        <div className="row mx-0 px-0 mt-4">
+          <div className={`col-6 m-0 p-0 py-2 pe-2`}>
+            <div
+              className={`selection-card py-3 px-2 pointer d-flex align-items-center`}
+            >
+              <div className="flex-fill text-truncate d-flex align-items-center">
+                <span>Student</span>
+              </div>
+              <div>
+                <input
+                  type="radio"
+                  readOnly
+                  style={{
+                    width: "15px",
+                    height: "15px",
+                  }}
+                />
+              </div>
+            </div>
+          </div>
+
+          <div className={`col-6 m-0 p-0 py-2 ps-2`}>
+            <div
+              className={`selection-card py-3 px-2 pointer d-flex align-items-center selected`}
+              role="button"
+              tabIndex={0}
+              onClick={() => {
+                window.location.href = "https://affiliate.study-ai.org";
+              }}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                  window.location.href = "https://affiliate.study-ai.org";
+                }
+              }}
+            >
+              <div className="flex-fill text-truncate d-flex align-items-center">
+                <span>Affiliates</span>
+              </div>
+              <div>
+                <input
+                  type="radio"
+                  checked
+                  readOnly
+                  style={{
+                    width: "15px",
+                    height: "15px",
+                  }}
+                />
+              </div>
+            </div>
+          </div>
         </div>
 
         <form onSubmit={handleSubmit(onSubmit)} className="row mx-0 mt-2">

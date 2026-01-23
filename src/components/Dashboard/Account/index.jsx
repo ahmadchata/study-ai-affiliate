@@ -139,12 +139,12 @@ const Profile = () => {
           </div>
 
           <div className="mb-4 mt-5 form-input">
-            <label className="form-label">Organization Name</label>
+            <label className="form-label">Name</label>
             <input
               type="text"
               className="pb-2 ps-0 form-control border-0 border-bottom rounded-0 grey-text"
               placeholder="Enter name"
-              defaultValue={profile?.message?.organization_name}
+              defaultValue={profile?.account_name}
               readOnly
             />
           </div>
@@ -161,7 +161,7 @@ const Profile = () => {
           </div>
 
           <div className="mb-4 form-input">
-            <label className="form-label">Address</label>
+            <label className="form-label">Phone number</label>
             <input
               type="text"
               className="pb-2 ps-0 grey-text form-control border-0 border-bottom rounded-0"
@@ -182,10 +182,10 @@ const Profile = () => {
             </button>
           </div>
 
-          <h6 className="mt-5 mb-4">Contact person</h6>
+          <h6 className="mt-5 mb-4">Payout details</h6>
           <div className="profile-field p-4 form-input">
             <div className="mb-4 mt-3 form-input">
-              <label className="form-label">Name</label>
+              <label className="form-label">Bank name</label>
               <input
                 type="text"
                 className="pb-2 ps-0 form-control border-0 border-bottom rounded-0 grey-text"
@@ -196,7 +196,7 @@ const Profile = () => {
             </div>
 
             <div className="mb-4 form-input">
-              <label className="form-label">Email</label>
+              <label className="form-label">Account Number</label>
               <input
                 type="email"
                 className="pb-2 ps-0 grey-text form-control border-0 border-bottom rounded-0"
@@ -207,7 +207,7 @@ const Profile = () => {
             </div>
 
             <div className="mb-4 form-input">
-              <label className="form-label">Phone</label>
+              <label className="form-label">Account name</label>
               <input
                 type="tel"
                 className="pb-2 ps-0 grey-text form-control border-0 border-bottom rounded-0"
