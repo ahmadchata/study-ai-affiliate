@@ -1,7 +1,7 @@
 const Terms = () => {
   return (
     <div>
-      <p>Terms</p>
+      <p>Terms and conditions</p>
     </div>
   );
 };

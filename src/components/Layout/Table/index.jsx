@@ -167,7 +167,7 @@ const Table = ({
   };
 
   return (
-    <div className="tanstack-table-wrapper p-4">
+    <div className="">
       <div className="d-block d-lg-flex justify-content-between mb-4">
         <div
           style={{

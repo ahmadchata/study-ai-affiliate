@@ -59,6 +59,20 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  const createAccount = async (details) => {
+    const signupData = {
+      phone: details?.phone,
+      usr: details?.usr,
+      referral_code: details?.referral_code,
+      pwd: details?.pwd,
+      full_name: details?.full_name,
+      gender: details?.gender,
+      date_of_birth: details?.date_of_birth,
+    };
+    const response = await AuthAPI.create(signupData, true);
+    return response.data;
+  };
+
   const handleAuthError = () => {
     setUser(null);
     setAuthenticated(false);
@@ -74,6 +88,7 @@ export const AuthProvider = ({ children }) => {
     loading,
     handleAuthError,
     login,
+    createAccount,
     logout,
     checkAuth,
   };

@@ -59,6 +59,10 @@ body {
   font-family: "NeueMontreal", "Segoe UI", sans-serif;
 }
 
+.fill {
+  flex: 1;
+}
+
 .default-btn {
   padding: 16px;
   color: #fff;

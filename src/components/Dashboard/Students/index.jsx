@@ -6,6 +6,7 @@ import { useQuery } from "@tanstack/react-query";
 import { DashboardAPI } from "../../../api/DashboardAPI";
 import dayjs from "dayjs";
 import "./styles.css";
+import NoData from "../../Common/NoData/NoData";
 
 const Students = () => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -45,11 +46,11 @@ const Students = () => {
     },
     {
       header: "Points earned",
-      accessorKey: "points",
+      accessorKey: "points_earned",
     },
     {
       header: "Subscription plan",
-      accessorKey: "",
+      accessorKey: "subscription_type",
     },
   ];
 
@@ -73,54 +74,74 @@ const Students = () => {
               <LoyaltyIcon style={{ fontSize: "18px" }} />
             </span>
             Total points earned:{" "}
-            <span className="ms-2 green-text">{data?.length}</span>
+            <span className="ms-2 green-text">
+              {students?.total_points_earned}
+            </span>
           </button>
         </div>
       </div>
-      <Table
-        columns={columns}
-        isFetching={isFetching}
-        data={data || []}
-        // statusAccessor="subscription_status"
-        onSearch={setSearchTerm}
-        searchValue={searchTerm}
-      />
-      <div className="d-flex justify-content-end align-items-center gap-2 mt-4">
-        <button
-          className="btn btn-outline-secondary"
-          onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
-          disabled={!students?.has_previous}
-        >
-          &lt;
-        </button>
-        {Array.from(
-          { length: students?.total_pages || 1 },
-          (_, i) => i + 1,
-        ).map((page) => (
-          <button
-            key={page}
-            className={`btn ${
-              currentPage === page ? "btn" : "btn-outline-secondary"
-            }`}
-            onClick={() => setCurrentPage(page)}
-            style={{
-              minWidth: "32px",
-              padding: "4px 8px",
-              backgroundColor: currentPage === page ? "#0c7a50" : "transparent",
-              color: currentPage === page ? "#fff" : "#000",
-              border: "1px solid #ddd",
-            }}
-          >
-            {page}
-          </button>
-        ))}
-        <button
-          className="btn btn-outline-secondary"
-          onClick={() => setCurrentPage((prev) => prev + 1)}
-          disabled={!students?.has_next}
-        >
-          &gt;
-        </button>
+      <div className="content-wrapper p-4">
+        <h6>Students</h6>
+        {students?.total === 0 ? (
+          <NoData
+            icon={<PeopleOutlineIcon style={{ color: "#000" }} />}
+            title="No students yet"
+            text="You haven't added any student yet. Recent students you add will appear
+        here"
+          />
+        ) : (
+          <Table
+            columns={columns}
+            isFetching={isFetching}
+            data={data || []}
+            // statusAccessor="subscription_status"
+            onSearch={setSearchTerm}
+            searchValue={searchTerm}
+          />
+        )}
+
+        {students?.total === 0 ? (
+          ""
+        ) : (
+          <div className="d-flex justify-content-end align-items-center gap-2 mt-4">
+            <button
+              className="btn btn-outline-secondary"
+              onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+              disabled={!students?.has_previous}
+            >
+              &lt; Previous
+            </button>
+            {Array.from(
+              { length: students?.total_pages || 1 },
+              (_, i) => i + 1,
+            ).map((page) => (
+              <button
+                key={page}
+                className={`btn ${
+                  currentPage === page ? "btn" : "btn-outline-secondary"
+                }`}
+                onClick={() => setCurrentPage(page)}
+                style={{
+                  minWidth: "32px",
+                  padding: "4px 8px",
+                  backgroundColor:
+                    currentPage === page ? "#0c7a50" : "transparent",
+                  color: currentPage === page ? "#fff" : "#000",
+                  border: "1px solid #ddd",
+                }}
+              >
+                {page}
+              </button>
+            ))}
+            <button
+              className="btn btn-outline-secondary"
+              onClick={() => setCurrentPage((prev) => prev + 1)}
+              disabled={!students?.has_next}
+            >
+              Next &gt;
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );

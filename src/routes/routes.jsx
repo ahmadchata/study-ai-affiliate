@@ -9,12 +9,14 @@ const Students = lazy(() => import("../views/dashboard/students"));
 const Payouts = lazy(() => import("../views/dashboard/payouts"));
 const Refer = lazy(() => import("../views/dashboard/refer-and-earn"));
 const Account = lazy(() => import("../views/dashboard/account"));
+const Signup = lazy(() => import("../views/create-account"));
 
 const AllRoutes = () => {
   return (
     <Suspense fallback={<LoadingTracker />}>
       <Routes>
         <Route path="/" element={<Login />} />
+        <Route path="/sign-up" element={<Signup />} />
         <Route
           path="/dashboard"
           element={

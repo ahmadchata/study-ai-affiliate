@@ -27,10 +27,11 @@ export const DashboardAPI = {
     return response.data.data;
   },
 
-  updateProfile: async function (name, phone, email, cancel = false) {
+  updateProfile: async function (details, cancel = false) {
     const response = await api.request({
-      url: `/method/studyai.apis.organization.update_organization_profile?contact_person=${name}&contact_number=${phone}&contact_person_email=${email}`,
+      url: `/method/studyai.apis.affiliate.update_affiliate_profile`,
       method: "PUT",
+      data: details,
       signal: cancel
         ? cancelApiObject[this.updateProfile.name].handleRequestCancellation()
             .signal
@@ -88,7 +89,7 @@ export const DashboardAPI = {
 
   login: async function (user, cancel = false) {
     const response = await api.request({
-      url: `/method/studyai.apis.organization.login`,
+      url: `/method/studyai.apis.affiliate.login`,
       method: "POST",
       data: user,
       signal: cancel

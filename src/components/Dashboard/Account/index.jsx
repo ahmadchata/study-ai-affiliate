@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "./styles.css";
 import { useQuery, useQueryClient, useMutation } from "@tanstack/react-query";
 import { DashboardAPI } from "../../../api/DashboardAPI";
@@ -10,12 +10,18 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
 import Visibility from "@mui/icons-material/Visibility";
+import { BanksAPI } from "../../../api/BanksAPI";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
+import NoData from "../../Common/NoData/NoData";
+import AccountBalanceIcon from "@mui/icons-material/AccountBalance";
+import Autocomplete from "../../Common/Autocomplete/Autocomplete";
+import CircularProgress from "@mui/material/CircularProgress";
 
 const Profile = () => {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [phone, setPhone] = useState("");
+  const [accountName, setAccountName] = useState("");
+  const [account, setAccount] = useState("");
+  const [bankName, setBankName] = useState("");
+  const [bankCode, setBankCode] = useState("");
   const [loading, setLoading] = useState(false);
   const [changingPassword, setChangingPassword] = useState(false);
 
@@ -28,10 +34,28 @@ const Profile = () => {
     queryFn: () => DashboardAPI.getProfile(true),
   });
 
+  const { data: banks, isFetching: isFetchingBanks } = useQuery({
+    queryKey: ["banks"],
+    refetchOnMount: false,
+    queryFn: () => BanksAPI.getBanks(true),
+  });
+
+  const { data: accName, isFetching: isFetchingAccName } = useQuery({
+    queryKey: ["accName", account, bankCode],
+    enabled: !!bankCode && !!account && account.length >= 10,
+    queryFn: () => BanksAPI.getAccountName(account, bankCode, true),
+  });
+
+  useEffect(() => {
+    if (accName?.data?.account_name) {
+      setAccountName(accName?.data?.account_name);
+    }
+  }, [accName]);
+
   const mutation = useMutation({
-    mutationFn: ({ name, phone, email }) => {
+    mutationFn: (details) => {
       setLoading(true);
-      const response = DashboardAPI.updateProfile(name, phone, email, true);
+      const response = DashboardAPI.updateProfile(details, true);
       return response;
     },
     onSuccess: () => {
@@ -44,6 +68,7 @@ const Profile = () => {
         },
       });
       queryClient.invalidateQueries({ queryKey: ["profile"] });
+      setShowBankDetailsModal(false);
     },
     onError: (error) => {
       setLoading(false);
@@ -73,6 +98,7 @@ const Profile = () => {
   });
 
   const [showPasswordModal, setShowPasswordModal] = useState(false);
+  const [showBankDetailsModal, setShowBankDetailsModal] = useState(false);
   const [showOldPassword, setShowOldPassword] = useState(false);
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -116,7 +142,11 @@ const Profile = () => {
   };
 
   const updateProfile = () => {
-    mutation.mutate({ name: name, phone: phone, email: email });
+    mutation.mutate({
+      bank: bankName,
+      account_number: account,
+      account_name: accountName,
+    });
   };
 
   if (isFetching) {
@@ -135,7 +165,7 @@ const Profile = () => {
               width={99}
               height={92}
             />
-            <button className="mt-4 btn edit-profile">Edit Profile</button>
+            {/* <button className="mt-4 btn edit-profile">Edit Profile</button> */}
           </div>
 
           <div className="mb-4 mt-5 form-input">
@@ -144,7 +174,7 @@ const Profile = () => {
               type="text"
               className="pb-2 ps-0 form-control border-0 border-bottom rounded-0 grey-text"
               placeholder="Enter name"
-              defaultValue={profile?.account_name}
+              defaultValue={profile?.name}
               readOnly
             />
           </div>
@@ -155,7 +185,7 @@ const Profile = () => {
               type="text"
               className="pb-2 ps-0 grey-text form-control border-0 border-bottom rounded-0"
               placeholder="Email"
-              defaultValue={profile?.message?.organization_email}
+              defaultValue={profile?.email}
               readOnly
             />
           </div>
@@ -166,7 +196,7 @@ const Profile = () => {
               type="text"
               className="pb-2 ps-0 grey-text form-control border-0 border-bottom rounded-0"
               placeholder="Physcial Address"
-              defaultValue={profile?.message?.physical_address}
+              defaultValue={profile?.mobile_no}
               readOnly
             />
           </div>
@@ -182,50 +212,44 @@ const Profile = () => {
             </button>
           </div>
 
-          <h6 className="mt-5 mb-4">Payout details</h6>
-          <div className="profile-field p-4 form-input">
-            <div className="mb-4 mt-3 form-input">
-              <label className="form-label">Bank name</label>
-              <input
-                type="text"
-                className="pb-2 ps-0 form-control border-0 border-bottom rounded-0 grey-text"
-                placeholder="Enter name"
-                defaultValue={profile?.message?.contact_person}
-                onChange={(e) => setName(e.target.value)}
-              />
-            </div>
-
-            <div className="mb-4 form-input">
-              <label className="form-label">Account Number</label>
-              <input
-                type="email"
-                className="pb-2 ps-0 grey-text form-control border-0 border-bottom rounded-0"
-                placeholder="Email"
-                defaultValue={profile?.message?.contact_person_email}
-                onChange={(e) => setEmail(e.target.value)}
-              />
-            </div>
-
-            <div className="mb-4 form-input">
-              <label className="form-label">Account name</label>
-              <input
-                type="tel"
-                className="pb-2 ps-0 grey-text form-control border-0 border-bottom rounded-0"
-                placeholder="Phone"
-                defaultValue={profile?.message?.contact_number}
-                onChange={(e) => setPhone(e.target.value)}
-              />
-            </div>
-          </div>
-          <div className="d-flex justify-content-end">
+          <div className="mt-5 mb-4 d-flex justify-content-between align-items-center">
+            <h6 className="m-0">Payout details</h6>{" "}
             <button
-              disabled={loading || (!name && !phone & !email)}
-              onClick={updateProfile}
-              className="py-2 btn default-btn my-5"
+              className="btn edit-profile"
+              onClick={() => setShowBankDetailsModal(true)}
             >
-              {loading ? "Saving..." : "Save changes"}
+              {profile?.bank === "" ? "Add bank details" : "Edit bank details"}
             </button>
           </div>
+
+          {profile?.bank === "" &&
+          profile?.account_number === "" &&
+          profile?.account_name === "" ? (
+            <div className="content-wrapper p-4">
+              <NoData
+                icon={<AccountBalanceIcon style={{ color: "#000" }} />}
+                title="No bank details yet"
+                text="Your bank details will appear here once you add them"
+              />
+            </div>
+          ) : (
+            <div className="profile-field p-4 form-input">
+              <div className="mb-4 mt-3 form-input">
+                <label className="form-label">Bank name</label>
+                <p>{profile?.bank}</p>
+              </div>
+
+              <div className="mb-4 form-input">
+                <label className="form-label">Account Number</label>
+                <p>{profile?.account_number}</p>
+              </div>
+
+              <div className="mb-4 form-input">
+                <label className="form-label">Account name</label>
+                <p>{profile?.account_name}</p>
+              </div>
+            </div>
+          )}
 
           <Modal
             open={showPasswordModal}
@@ -344,6 +368,99 @@ const Profile = () => {
                     </button>
                   </div>
                 </form>
+              </div>
+            </div>
+          </Modal>
+
+          <Modal
+            open={showBankDetailsModal}
+            onClose={() => setShowBankDetailsModal(false)}
+            aria-labelledby="bank-modal-title"
+            aria-describedby="bank-modal-description"
+          >
+            <div className="change-password-bg">
+              <div
+                className="change-password-modal"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <h5 className="mb-5">Bank details</h5>
+                <div>
+                  <div className="mb-4 mt-3 form-input">
+                    <label className="form-label">Bank name</label>
+                    {isFetchingBanks ? (
+                      <CircularProgress
+                        size={"20px"}
+                        style={{ color: "#0c7a50" }}
+                      />
+                    ) : (
+                      <Autocomplete
+                        options={banks?.data?.map((bank) => ({
+                          value: bank?.code,
+                          label: bank?.name,
+                          id: bank?.id,
+                        }))}
+                        disabled={isFetchingAccName}
+                        value={bankCode}
+                        onChange={(value) => {
+                          setBankCode(value);
+                          const selectedBank = banks?.data?.find(
+                            (bank) => bank?.code === value,
+                          );
+                          setBankName(selectedBank?.name || "");
+                        }}
+                        placeholder="Search for a bank..."
+                        maxResults={228}
+                      />
+                    )}
+                  </div>
+
+                  <div className="mb-4 form-input">
+                    <label className="form-label">Account Number</label>
+                    <input
+                      disabled={isFetchingAccName}
+                      type="number"
+                      className="pb-2 ps-0 grey-text form-control border-0 border-bottom rounded-0"
+                      placeholder="Account number"
+                      defaultValue={profile?.account_number}
+                      onChange={(e) => setAccount(e.target.value)}
+                    />
+                  </div>
+
+                  <div className="mb-4 form-input">
+                    <label className="form-label">Account name</label>
+                    <input
+                      type="text"
+                      className="pb-2 ps-0 grey-text form-control border-0 border-bottom rounded-0"
+                      placeholder={
+                        isFetchingAccName
+                          ? "Verifying account name..."
+                          : "Account name"
+                      }
+                      readOnly
+                      value={accountName}
+                    />
+                  </div>
+
+                  <div className="d-flex justify-content-end gap-2 mt-4">
+                    <button
+                      type="button"
+                      className="btn secondary-btn py-2"
+                      onClick={() => setShowBankDetailsModal(false)}
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      type="button"
+                      className="btn default-btn py-2"
+                      disabled={
+                        loading || !bankName || !account || !accountName
+                      }
+                      onClick={updateProfile}
+                    >
+                      {loading ? "Saving..." : "Save"}
+                    </button>
+                  </div>
+                </div>
               </div>
             </div>
           </Modal>

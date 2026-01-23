@@ -58,8 +58,8 @@ const Home = () => {
 
   return (
     <div className="px-lg-5 px-2 py-3 py-lg-5">
-      <div className="d-flex justify-content-between">
-        <h6 className="">Today</h6>
+      <div className="d-flex justify-content-end justify-content-xl-between align-items-center">
+        <h6 className="d-none d-xl-block">Today</h6>
         <Link
           className={`text-decoration-none text-success`}
           to={"/dashboard/refer-and-earn"}
@@ -106,7 +106,7 @@ const Home = () => {
                 <h5 className="m-0 ref-link text-truncate py">
                   <LinkIcon className="hm-icons" /> {overview?.referral_link}
                 </h5>
-                  <div className="d-flex justify-content-around ms-md-3 ps-md-3 mt-4 mt-md-0 ref-actions">
+                <div className="d-flex justify-content-around ms-md-3 ps-md-3 mt-4 mt-md-0 ref-actions">
                   <button
                     className="btn actn-btns me-2"
                     onClick={() => copyToClipboard(overview?.referral_link)}
@@ -141,18 +141,9 @@ const Home = () => {
           <EarningsChart />
         </div>
 
-        <div className="summary-bg col-12 col-lg p-3">
+        <div className="summary-bg col-12 col-lg p-4">
           <h6>Recent Students</h6>
-          <div
-            className="bg-white summary-card mt-4"
-            style={{
-              maxHeight: "400px",
-              overflowY: "auto",
-              scrollBehavior: "smooth",
-            }}
-          >
-            <RecentStudents recentStudents={overview?.recent_students} />
-          </div>
+          <RecentStudents recentStudents={overview?.recent_students} />
         </div>
       </div>
     </div>

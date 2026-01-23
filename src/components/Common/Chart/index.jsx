@@ -3,6 +3,8 @@ import "./styles.css";
 import { useQuery } from "@tanstack/react-query";
 import { DashboardAPI } from "../../../api/DashboardAPI";
 import CircularProgress from "@mui/material/CircularProgress";
+import PaymentsIcon from "@mui/icons-material/Payments";
+import NoData from "../NoData/NoData";
 
 import { ResponsiveContainer } from "recharts";
 
@@ -15,6 +17,16 @@ const EarningsChart = () => {
 
   if (isFetching) {
     return <CircularProgress size={"20px"} style={{ color: "#0c7a50" }} />;
+  }
+
+  if (earnings?.data?.summary?.total_points === 0) {
+    return (
+      <NoData
+        icon={<PaymentsIcon style={{ color: "#000" }} />}
+        title="No earnings yet"
+        text="You don't have any earnings yet. Your earnings performance will appear here when you do"
+      />
+    );
   }
 
   return (

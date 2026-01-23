@@ -1,17 +1,18 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useMutation } from "@tanstack/react-query";
-// import { Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useAuth } from "../../Context/AuthContext";
 import "./Login.css";
 import { useSnackbar } from "notistack";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
-import { AuthAPI } from "../../api/AuthAPI";
 import CircularProgress from "@mui/material/CircularProgress";
+import ErrorSnackbar from "../Common/Toast/ErrorSnackBar";
+import VerifyAccount from "../Common/VerifyAccount/VerifyAccount";
 
 export default function Login() {
   const { login, authenticated, loading: authLoading } = useAuth();
@@ -19,30 +20,11 @@ export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
-  const [searchParams] = useSearchParams();
-  const paramValue = searchParams.get("token");
-  const hasVerified = useRef(false);
+  const [verify, setVerify] = useState(false);
+  const [phone, setPhone] = useState("your phone");
 
   const handleClickShowPassword = () =>
     setShowPassword((showPassword) => !showPassword);
-
-  const verifyEmailMutation = useMutation({
-    mutationFn: async (token) => {
-      const response = await AuthAPI.verifyAccount(token, true);
-      return response;
-    },
-    onSuccess: (response) => {
-      enqueueSnackbar(response?.data?.message, {
-        variant: "success",
-      });
-    },
-    onError: (error) => {
-      setLoading(false);
-      enqueueSnackbar(error?.response?.data?.message, {
-        variant: "error",
-      });
-    },
-  });
 
   useEffect(() => {
     if (authenticated) {
@@ -50,28 +32,23 @@ export default function Login() {
     }
   }, [authenticated, navigate]);
 
-  useEffect(() => {
-    if (paramValue && !hasVerified.current) {
-      hasVerified.current = true;
-      verifyEmailMutation.mutate({ token: paramValue });
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [paramValue]);
-
   const validationSchema = Yup.object().shape({
-    usr: Yup.string().required("Email is required"),
+    usr: Yup.string().required("Email/Phone is required"),
     pwd: Yup.string()
-      .min(3, "Password must be at least 8 characters")
+      .min(8, "Password must be at least 8 characters")
       .required("Password is required"),
   });
 
   const {
     register,
     handleSubmit,
+    watch,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(validationSchema),
   });
+
+  const userName = watch("usr");
 
   const mutation = useMutation({
     mutationFn: async ({ usr, pwd }) => {
@@ -84,12 +61,48 @@ export default function Login() {
       navigate("/dashboard");
     },
     onError: (error) => {
+      setPhone(error.response.data.phone);
+      if (error.status === 422) {
+        setVerify(true);
+      }
       setLoading(false);
-      enqueueSnackbar(error?.response?.data?.message, {
-        variant: "error",
-      });
+      if (error.response.data.exc_type === "CSRFTokenError") {
+        enqueueSnackbar("", {
+          content: (key) => (
+            <ErrorSnackbar
+              id={key}
+              message={{
+                title: "There was an error",
+                text: "You are logged in on another tab",
+              }}
+            />
+          ),
+        });
+      } else {
+        enqueueSnackbar("", {
+          content: (key) => (
+            <ErrorSnackbar
+              id={key}
+              message={{
+                title: "There was an error",
+                text: error?.response?.data?.message,
+              }}
+            />
+          ),
+        });
+      }
     },
   });
+
+  if (verify) {
+    return (
+      <VerifyAccount
+        identifier={userName}
+        phone={phone}
+        handleBack={() => setVerify(false)}
+      />
+    );
+  }
 
   const onSubmit = async (data) => {
     mutation.mutate({ usr: data.usr, pwd: data.pwd });
@@ -101,7 +114,7 @@ export default function Login() {
 
   return (
     <div className="login-container">
-      <div className="login-form px-4">
+      <div className="login-form px-3">
         <div className="text-center">
           <img
             className="img-fluid logo"
@@ -109,8 +122,8 @@ export default function Login() {
             alt="logo"
             loading="lazy"
           />
-          <p className="m-0 p-0 fs-5">
-            <span className="text-black">Welcome back, enter your details</span>
+          <p className="m-0 p-0 fs-6">
+            <span className="green-text">Welcome back</span>, enter your details
           </p>
         </div>
 
@@ -118,6 +131,14 @@ export default function Login() {
           <div className={`col-6 m-0 p-0 py-2 pe-2`}>
             <div
               className={`selection-card py-3 px-2 pointer d-flex align-items-center`}
+              onClick={() => {
+                window.location.href = "https://dashboard.study-ai.org";
+              }}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                  window.location.href = "https://dashboard.study-ai.org";
+                }
+              }}
             >
               <div className="flex-fill text-truncate d-flex align-items-center">
                 <span>Student</span>
@@ -140,14 +161,6 @@ export default function Login() {
               className={`selection-card py-3 px-2 pointer d-flex align-items-center selected`}
               role="button"
               tabIndex={0}
-              onClick={() => {
-                window.location.href = "https://affiliate.study-ai.org";
-              }}
-              onKeyDown={(e) => {
-                if (e.key === "Enter" || e.key === " ") {
-                  window.location.href = "https://affiliate.study-ai.org";
-                }
-              }}
             >
               <div className="flex-fill text-truncate d-flex align-items-center">
                 <span>Affiliates</span>
@@ -171,9 +184,9 @@ export default function Login() {
           <div className="login mt-4 mb-4 col-12 form-control form-field">
             <input
               disabled={loading}
-              type="email"
+              type="text"
               className="w-100"
-              placeholder="Enter email address"
+              placeholder="Enter email address or Phone number"
               {...register("usr")}
             />
             <div className={`${errors.usr ? "is-invalid" : ""}`}></div>
@@ -205,17 +218,33 @@ export default function Login() {
               <div className="invalid-feedback">{errors.pwd.message}</div>
             )}
           </div>
-          {/* <Link to="#" className={`text-dark mt-2`}>
+          <Link to="/forgot-password" className={`text-dark mt-2`}>
             <label className="text-end pointer w-100">Forgot password?</label>
-          </Link> */}
+          </Link>
           <button
             disabled={loading}
-            className="btn default-btn mt-5 mb-4"
+            className="btn login-btn mt-5 mb-4 d-flex align-items-center justify-content-center"
             type="submit"
+            aria-busy={loading}
           >
-            {loading ? "Logging in..." : "Log in"}
+            {loading ? (
+              <>
+                <CircularProgress
+                  size={18}
+                  style={{ color: "#f8ff06", marginRight: 8 }}
+                />
+                <span>Logging in...</span>
+              </>
+            ) : (
+              "Log in"
+            )}
           </button>
         </form>
+        <Link to="/sign-up" className={`text-dark`}>
+          <label className="text-center pointer w-100">
+            Don't have an account? <span className="green-text">Sign up</span>
+          </label>
+        </Link>
       </div>
     </div>
   );
