@@ -78,88 +78,56 @@ const Header = () => {
                 <img src={MenuLogo} alt="Menu" className="img-fluid" />
               </button>
             </div>
-            <div className="text-white mt-4">
-              <label className="header-label">
-                {currentPage[location.pathname] ?? ""}
-              </label>
-            </div>
           </div>
-          <div>
-            <div className="d-none d-lg-flex justify-content-between align-items-center">
-              <div className="header-tabs">
-                <Link
-                  className={`text-decoration-none text-white ${
-                    location.pathname === "/dashboard"
-                      ? "header-active"
-                      : "header"
-                  }`}
-                  to={"/dashboard"}
-                >
-                  <WorkspacesIcon
-                    style={{ color: "#fff", marginRight: "10px" }}
-                  />
-                  Overview
-                </Link>
 
-                <Link
-                  className={`text-decoration-none text-white mx-3 ${
-                    location.pathname === "/dashboard/students"
-                      ? "header-active"
-                      : "header"
-                  }`}
-                  to={"/dashboard/students"}
-                >
-                  <GroupIcon style={{ color: "#fff", marginRight: "10px" }} />
-                  Students
-                </Link>
+          <div className="d-none d-lg-flex justify-content-between align-items-center">
+            <div className="header-tabs">
+              <Link
+                className={`text-decoration-none text-white ${
+                  location.pathname === "/dashboard"
+                    ? "header-active"
+                    : "header"
+                }`}
+                to={"/dashboard"}
+              >
+                <WorkspacesIcon
+                  style={{ color: "#fff", marginRight: "10px" }}
+                />
+                Overview
+              </Link>
 
-                <Link
-                  className={`text-decoration-none text-white me-3 ${
-                    location.pathname.includes("/dashboard/payouts")
-                      ? "header-active"
-                      : "header"
-                  }`}
-                  to={"/dashboard/payouts"}
-                >
-                  <SpeakerGroupIcon
-                    style={{ color: "#fff", marginRight: "10px" }}
-                  />
-                  Payout
-                </Link>
+              <Link
+                className={`text-decoration-none text-white mx-3 ${
+                  location.pathname === "/dashboard/students"
+                    ? "header-active"
+                    : "header"
+                }`}
+                to={"/dashboard/students"}
+              >
+                <GroupIcon style={{ color: "#fff", marginRight: "10px" }} />
+                Students
+              </Link>
 
-                <div className="d-flex align-items-center mb-lg-0 border-start">
-                  <button className="btn header ms-3" onClick={toggleSidebar}>
-                    <PersonIcon style={{ color: "#fff" }} />
-                    <KeyboardArrowDownIcon
-                      style={{ color: "#fff", marginLeft: "10px" }}
-                    />
-                  </button>
-                </div>
-              </div>
-            </div>
-            <div className="d-flex justify-content-end align-items-center mt-4">
-              <div className="code-btn d-flex align-items-center">
-                <Tooltip
-                  arrow
-                  title="This is your referral code. When applied upon checkout, you'll get the corresponding commission in your account."
-                >
-                  <IconButton>
-                    <InfoIcon className="info-icon" />
-                  </IconButton>
-                </Tooltip>
-                <label className="text-white me-2">{referralCode}</label>
-                <button
-                  className="text-white code-actn-btn px-3"
-                  onClick={() => copyToClipboard(referralCode)}
-                >
-                  <ContentCopyOutlinedIcon
-                    style={{
-                      fontSize: "14px",
-                      color: "#fff",
-                      marginRight: "5px",
-                    }}
+              <Link
+                className={`text-decoration-none text-white me-3 ${
+                  location.pathname.includes("/dashboard/payouts")
+                    ? "header-active"
+                    : "header"
+                }`}
+                to={"/dashboard/payouts"}
+              >
+                <SpeakerGroupIcon
+                  style={{ color: "#fff", marginRight: "10px" }}
+                />
+                Payout
+              </Link>
+
+              <div className="d-flex align-items-center mb-lg-0 border-start">
+                <button className="btn header ms-3" onClick={toggleSidebar}>
+                  <PersonIcon style={{ color: "#fff" }} />
+                  <KeyboardArrowDownIcon
+                    style={{ color: "#fff", marginLeft: "10px" }}
                   />
-                  Copy
                 </button>
               </div>
             </div>
@@ -178,6 +146,40 @@ const Header = () => {
             orgName={user?.user?.full_name}
           />
         </CSSTransition>
+        <div className="d-flex justify-content-between">
+          <div className="text-white mt-4">
+            <label className="header-label">
+              {currentPage[location.pathname] ?? ""}
+            </label>
+          </div>
+
+          <div className="mt-4">
+            <div className="code-btn d-flex align-items-center">
+              <Tooltip
+                arrow
+                title="This is your referral code. When applied upon checkout, you'll get the corresponding commission in your account."
+              >
+                <IconButton>
+                  <InfoIcon className="info-icon" />
+                </IconButton>
+              </Tooltip>
+              <label className="text-white me-2">{referralCode}</label>
+              <button
+                className="text-white code-actn-btn px-3"
+                onClick={() => copyToClipboard(referralCode)}
+              >
+                <ContentCopyOutlinedIcon
+                  style={{
+                    fontSize: "14px",
+                    color: "#fff",
+                    marginRight: "5px",
+                  }}
+                />
+                Copy
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
     </header>
   );

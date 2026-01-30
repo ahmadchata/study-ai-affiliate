@@ -119,7 +119,7 @@ const Requests = () => {
                 <label className="hint-label mt-3 mb-4">
                   Rate: 1 point ~ ₦1,000
                 </label>
-                <div className="mb-3">
+                <div>
                   <label className="form-label label-font">Cash</label>
                   <div className="input-group">
                     <span className="input-group-text naira-prefix">₦</span>
