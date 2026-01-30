@@ -1,0 +1,108 @@
+.refer-info {
+  background-color: #f9f9f9;
+  border-radius: 18px;
+}
+
+.refer-info header {
+  display: flex;
+  gap: 16px;
+  padding: 12px 16px;
+  border-bottom: 1px solid #eaeaea;
+}
+
+.tab-btn {
+  background: transparent;
+  border: none;
+  padding: 10px 4px;
+  font-weight: 500;
+  color: #929292;
+  border-bottom: 3px solid transparent;
+}
+
+.hint-label {
+  background-color: #fff;
+  font-weight: 400;
+  border-radius: 16px;
+  padding: 5px 10px;
+  border: 1px solid #eaeaea;
+  color: #929292;
+}
+
+.label-font {
+  font-weight: 500;
+}
+
+.tab-btn.active {
+  border-bottom-color: #0c7a50;
+  color: #0c7a50;
+}
+
+.tab-content {
+  padding: 16px;
+}
+
+.request-input {
+  border-radius: 16px !important;
+  border: 1px solid #e0e0e0;
+  transition: border-color 200ms ease;
+}
+
+.request-input:focus {
+  border-color: #0c7a50 !important;
+  box-shadow: 0 0 0 0.2rem rgba(12, 122, 80, 0.15);
+}
+
+.naira-prefix {
+  border-radius: 16px 0 0 16px !important;
+  background-color: #fff;
+  border: 1px solid #e0e0e0;
+  border-right: none;
+  font-size: 1.5rem;
+  font-weight: 500;
+  color: #929292;
+}
+
+.request-input:disabled {
+  background-color: #fff;
+}
+
+.input-group .request-input {
+  border-left: none;
+  border-radius: 0 16px 16px 0 !important;
+}
+
+.request-slider {
+  overflow: hidden;
+  width: 100%;
+}
+
+.request-slides {
+  display: flex;
+  width: 300%;
+  transition: transform 300ms ease-in-out;
+}
+
+.request-slides--step2 {
+  transform: translateX(-33.333%);
+}
+
+.request-slides--step3 {
+  transform: translateX(-66.666%);
+}
+
+.request-slide {
+  width: 33.333%;
+  padding: 0 4px;
+}
+
+.otp-input-box {
+  border: 1px solid #e0e0e0 !important;
+  outline: none !important;
+  font-size: 1.5rem;
+  font-weight: 500;
+}
+
+.otp-input-box:focus {
+  border-color: #0c7a50 !important;
+  box-shadow: 0 0 0 0.2rem rgba(12, 122, 80, 0.15);
+}

@@ -32,8 +32,9 @@ const About = () => {
       <p className="mt-4">Commission</p>
 
       <ul>
-        <li>10 points ( N1,000) on every monthly subscription made</li>
-        <li>15 points ( N1,500) on every quaterly subscription made</li>
+        <li>0.1 point ( N100) on every monthly subscription made</li>
+        <li>0.5 point ( N500) on every quaterly subscription made</li>
+        <li>2 points ( N2,000) on every annual subscription made</li>
       </ul>
 
       <p className="mt-4">Why join?</p>

@@ -6,13 +6,14 @@ import { useQuery } from "@tanstack/react-query";
 import CircularProgress from "@mui/material/CircularProgress";
 import dayjs from "dayjs";
 import ReceiptLongIcon from "@mui/icons-material/ReceiptLong";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import NoData from "../../Common/NoData/NoData";
 
 const Payouts = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState("");
   const [debouncedSearchTerm, setDebouncedSearchTerm] = useState("");
+  const navigate = useNavigate();
 
   // Debounce search term
   useEffect(() => {
@@ -73,6 +74,10 @@ const Payouts = () => {
     },
   ];
 
+  const requestPayout = () => {
+    navigate("/dashboard/payouts/requests");
+  };
+
   const columns = getColumns();
 
   return (
@@ -105,7 +110,7 @@ const Payouts = () => {
             ) : (
               <div className="mt-4 d-flex align-items-center justify-content-between">
                 <h5 className="b-text m-0 d-flex align-items-center">
-                  {payoutsSummary?.last_payout?.amount ?? 0 / 1000} pts ={" "}
+                  {payoutsSummary?.last_payout?.points ?? 0} pts ={" "}
                   <span className="grey-text m-text ms-2">
                     ₦{payoutsSummary?.last_payout?.amount ?? 0}
                   </span>
@@ -118,9 +123,10 @@ const Payouts = () => {
         <div className="col-12 col-md-6 col-lg-4 mt-3 mt-lg-0 px-0 ps-md-3">
           <div className="p-summary-card p-3 d-flex flex-column flex-fill h-100">
             <button
-              disabled={payoutsSummary?.available_balance_points < 5}
+              // disabled={payoutsSummary?.available_balance_points < 5}
               className="btn default-btn mx-auto py-2 px-4"
               style={{ maxWidth: "220px" }}
+              onClick={requestPayout}
             >
               Withdraw earnings
             </button>

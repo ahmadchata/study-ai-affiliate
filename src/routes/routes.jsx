@@ -10,6 +10,7 @@ const Payouts = lazy(() => import("../views/dashboard/payouts"));
 const Refer = lazy(() => import("../views/dashboard/refer-and-earn"));
 const Account = lazy(() => import("../views/dashboard/account"));
 const Signup = lazy(() => import("../views/create-account"));
+const RequestPayouts = lazy(() => import("../views/dashboard/payout-request"));
 
 const AllRoutes = () => {
   return (
@@ -40,6 +41,15 @@ const AllRoutes = () => {
           element={
             <ProtectedRoute>
               <Payouts />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/dashboard/payouts/requests"
+          element={
+            <ProtectedRoute>
+              <RequestPayouts />
             </ProtectedRoute>
           }
         />

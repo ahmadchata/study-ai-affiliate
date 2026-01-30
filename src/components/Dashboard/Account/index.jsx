@@ -16,6 +16,8 @@ import NoData from "../../Common/NoData/NoData";
 import AccountBalanceIcon from "@mui/icons-material/AccountBalance";
 import Autocomplete from "../../Common/Autocomplete/Autocomplete";
 import CircularProgress from "@mui/material/CircularProgress";
+import SetPin from "../../Common/Pin/Pin";
+import CloseIcon from "@mui/icons-material/Close";
 
 const Profile = () => {
   const [accountName, setAccountName] = useState("");
@@ -24,6 +26,7 @@ const Profile = () => {
   const [bankCode, setBankCode] = useState("");
   const [loading, setLoading] = useState(false);
   const [changingPassword, setChangingPassword] = useState(false);
+  const [changePin, setChangePin] = useState(false);
 
   const queryClient = useQueryClient();
   const { enqueueSnackbar } = useSnackbar();
@@ -146,6 +149,7 @@ const Profile = () => {
       bank: bankName,
       account_number: account,
       account_name: accountName,
+      bank_code: bankCode,
     });
   };
 
@@ -193,9 +197,9 @@ const Profile = () => {
           <div className="mb-4 form-input">
             <label className="form-label">Phone number</label>
             <input
-              type="text"
+              type="number"
               className="pb-2 ps-0 grey-text form-control border-0 border-bottom rounded-0"
-              placeholder="Physcial Address"
+              placeholder="Phone number"
               defaultValue={profile?.mobile_no}
               readOnly
             />
@@ -209,6 +213,17 @@ const Profile = () => {
               onClick={() => setShowPasswordModal(true)}
             >
               Change password
+            </button>
+          </div>
+
+          <div className="mb-4 form-input">
+            <label className="form-label mb-4">Pin</label>
+            <br />
+            <button
+              className="btn secondary-btn py-2"
+              onClick={() => setChangePin(true)}
+            >
+              Change pin
             </button>
           </div>
 
@@ -460,6 +475,37 @@ const Profile = () => {
                       {loading ? "Saving..." : "Save"}
                     </button>
                   </div>
+                </div>
+              </div>
+            </div>
+          </Modal>
+
+          <Modal
+            open={changePin}
+            onClose={() => setChangePin(false)}
+            aria-labelledby="bank-modal-title"
+            aria-describedby="bank-modal-description"
+          >
+            <div className="change-password-bg">
+              <div
+                className="change-password-modal"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <div className="d-flex justify-content-between align-items-center">
+                  <h5 className="mb-5">Set account pin</h5>
+                  <button
+                    className="mb-5 btn"
+                    onClick={() => setChangePin(false)}
+                  >
+                    <CloseIcon size={"20px"} />
+                  </button>
+                </div>
+
+                <div className="mt-3 form-input">
+                  <SetPin
+                    close={() => setChangePin(false)}
+                    existingPin={profile?.existing_pin}
+                  />
                 </div>
               </div>
             </div>

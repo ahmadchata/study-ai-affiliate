@@ -31,6 +31,7 @@ const Header = () => {
     "/dashboard/payouts": "Payout",
     "/dashboard/account": "Account",
     "/dashboard/refer-and-earn": "Refer and earn",
+    "/dashboard/payouts/requests": "Requests",
   };
 
   const toggleSidebar = () => {

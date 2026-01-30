@@ -40,6 +40,45 @@ export const DashboardAPI = {
     return response.data.data;
   },
 
+  updatePin: async function (pin, cancel = false) {
+    const response = await api.request({
+      url: `/method/studyai.apis.affiliate.update_withdrawal_pin`,
+      method: "PUT",
+      data: pin,
+      signal: cancel
+        ? cancelApiObject[this.updatePin.name].handleRequestCancellation()
+            .signal
+        : undefined,
+    });
+    return response.data.data;
+  },
+
+  requestPayout: async function (details, cancel = false) {
+    const response = await api.request({
+      url: `/method/studyai.apis.affiliate.request_payout`,
+      method: "POST",
+      data: details,
+      signal: cancel
+        ? cancelApiObject[this.requestPayout.name].handleRequestCancellation()
+            .signal
+        : undefined,
+    });
+    return response.data.data;
+  },
+
+  verifyPin: async function (details, cancel = false) {
+    const response = await api.request({
+      url: `/method/studyai.apis.affiliate.verify_pin_otp`,
+      method: "POST",
+      data: details,
+      signal: cancel
+        ? cancelApiObject[this.verifyPin.name].handleRequestCancellation()
+            .signal
+        : undefined,
+    });
+    return response.data.data;
+  },
+
   overview: async function (cancel = false) {
     const response = await api.request({
       url: `/method/studyai.apis.affiliate.get_affiliate_profile`,
